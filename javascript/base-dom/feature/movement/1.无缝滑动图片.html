@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		.container{
+			width: calc(178px * 3);
+			height: 108px;
+			margin: 100px auto;
+			position: relative; 
+			background: red;
+			overflow: hidden;
+		}
+		.container ul{
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+		.container ul li {
+			float: left;
+			width: 178px;
+			height: 108px;
+			list-style: none;
+		}
+		img {
+			width: 100%;
+			height: 100%;
+		}
+	</style>
+	<script>
+		window.onload = function(){
+
+			let container = document.getElementsByClassName('container')[0];
+			let ulObj = container.getElementsByTagName('ul')[0];
+			let liWidth = ulObj.getElementsByTagName('li')[0].offsetWidth;
+
+			ulObj.innerHTML += ulObj.innerHTML; 
+			ulObj.style.width = liWidth * ulObj.getElementsByTagName('li').length + 'px'; 
+
+			let moveOption = {
+				direction: "left",
+				speed: 2
+			}
+
+			let interval = setInterval(move(moveOption), 50);
+
+			// 鼠标悬浮启停运动
+			ulObj.onmouseover = () => {
+				clearInterval(interval);
+			}
+			ulObj.onmouseout = () => {
+				interval = setInterval(move(moveOption), 50);
+			}
+
+			function move(option = {direction: "left", speed: 2}){
+				let {direction, speed} = option;
+				// 返回运动函数
+				return () => {
+					if(ulObj.offsetLeft < -ulObj.offsetWidth/2){
+						ulObj.style.left = '0';
+					}
+					if(ulObj.offsetLeft > 0){
+						ulObj.style.left = -ulObj.offsetWidth/2 + 'px';
+					}
+					if(direction == "right"){
+						ulObj.style.left = ulObj.offsetLeft + speed + 'px';
+					}else{
+						ulObj.style.left = ulObj.offsetLeft - speed + 'px';
+					}
+				}
+			}
+		
+		}
+	</script>
+</head>
+<body>
+	<div class="container">
+		<ul>
+			<li><img src="images/1.jpeg" alt=""></li>
+			<li><img src="images/2.jpeg" alt=""></li>
+			<li><img src="images/3.jpeg" alt=""></li>
+		</ul>
+	</div>
+</body>
+</html>

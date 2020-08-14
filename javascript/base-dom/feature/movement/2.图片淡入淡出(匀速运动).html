@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style>
+		#container {
+			width: 500px;
+			height: 400px;
+			background: #fff;
+			margin: 20vh auto;
+		}
+		img {
+			height: 100%;
+			width: 100%;
+			filter: alpha(opacity: 30);
+			opacity: .3;
+		}
+	</style>
+	<script>
+		let timer = null;
+		let alpha = 30; // 默认透明度
+
+		window.onload = function(){
+			let image = document.getElementsByTagName('img')[0];
+			image.onmouseover = () => {
+				startMove(image, 100);
+			}
+			image.onmouseout = () => {
+				startMove(image, 30);
+			}
+		}
+
+		function startMove(image, target){
+			// 关闭定时器以免多个定时器重复效果增强
+			clearInterval(timer);
+
+			// 设置速度
+			let speed = alpha < target ?  5 : -5;
+
+			timer = setInterval(function(){
+				if(Math.abs(alpha - target)  <  Math.abs(speed)){ // 匀速运动的停止条件, 防止最后距离小于单位速度时不断抖动
+					clearInterval(timer);
+				}else{
+					alpha += speed;
+					image.style.filter = `alpha(opacity: ${alpha})`;
+					image.style.opacity = alpha/100;
+				}
+
+			} ,30)
+
+		}
+	</script>
+</head>
+<body>
+
+<div id="container">
+<img src="images/3.jpeg" alt="">
+</div>
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style>
+		.container {
+			width: 100px;
+			height: 100px;
+			position: absolute;
+			background: red;
+			top: 100px;
+			left: 600px;
+		}	
+
+		.target {
+			height: 300px;
+			width: 1px;
+			position: absolute;
+			left: 300px;
+			top: 0;
+			background: black;
+		}
+	</style>
+	<script>
+		window.onload = function(){
+			let container = document.getElementsByClassName('container')[0];
+			let target = 300;
+			let speed = 0;
+
+			let timer = setInterval(function(){
+					// 距离越大速度越大
+					speed = (target - container.offsetLeft) / 30;
+					// 缓冲运动一定不要忘记速度取整
+					speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
+					if(speed != 0){
+						container.style.left = container.offsetLeft + speed + 'px';
+						document.title = `${container.offsetLeft}, ${speed}`
+					}else{
+						clearInterval(timer);
+					}
+			}, 30);
+
+		}
+	</script>
+</head>
+<body>
+	<div class="container">
+	</div>
+	<div class="target"></div>
+</body>
+</html>

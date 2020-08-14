@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style>
+		.target {
+			width: 100px;
+			height: 200px;
+			background: red;
+			position: absolute;
+			right: 0;
+			top: 50%;
+			transform: translateY(-50%);
+		}
+
+		body {
+			height: 2000px;
+		}
+	</style>
+
+	<script>
+		window.onscroll = function(){
+
+			let target = document.getElementsByClassName('target')[0];
+
+			let scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+
+			let to = (document.documentElement.clientHeight - target.offsetHeight) / 2 + scrollTop;
+
+			startMove(target, parseInt(to));
+		}
+
+
+		let timer = null;
+		function startMove(target, topTo) {
+			// 清除定时器
+			clearInterval(timer);
+			timer = setInterval(function(){
+				// 设置缓冲运动
+				let speed = (topTo -  target.offsetTop) / 30;
+				speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
+				if(target.offsetTop == topTo){
+					clearInterval(timer);
+				}else{
+					target.style.top = target.offsetTop + speed + 'px';
+				}
+			}, 30);
+
+		}
+	</script>
+
+</head>
+<body>
+	<div class="target">
+	</div>
+</body>
+</html>

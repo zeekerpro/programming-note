@@ -1,0 +1,60 @@
+<!-- 所有div在鼠标移入移出都做透明度变化 -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style>
+		div {
+			width: 100px;
+			height: 100px;
+			background: red;
+			opacity: 0.3;
+			filter: alpha(opacity: 30);
+			margin: 20px;
+			float: left;
+		}
+	</style>
+
+	<script>
+
+window.onload = function(){
+	let divs = document.getElementsByTagName('div');
+	for(let i = 0; i < divs.length; i++){
+		let div = divs[i];
+		div.alpha = 30; // 给每个对象设置变量属性，避免互相干扰
+		div.onmouseover = function(){
+			startMove(div, 100);
+		};
+		div.onmouseout = function(){
+			startMove(div, 30);
+		}
+	};
+};
+
+function startMove(obj, target){
+	clearInterval(obj.timer); // 开始前关闭定时器，以免重复设置
+	obj.timer = setInterval(function(){ // 给每个对象设置定时器，避免互相干扰
+		let speed = (target - obj.alpha)/6;
+		speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed); // 缓冲运动速度取整
+		if(Math.abs(target - obj.alpha) < Math.abs(speed)){ // 注意关闭定时器的时机
+			clearInterval(obj.timer);
+			// 关闭定时器后设置最终状态
+			obj.style.opacity = obj.target/100;
+			obj.style.filter = `alpha(opacity: ${target})`;
+		}else{
+			obj.alpha += speed;
+			obj.style.filter = `alpha(opacity: ${obj.alpha})`;
+			obj.style.opacity = obj.alpha/100;
+		}
+	}, 30)
+}
+	</script>
+</head>
+<body>
+	<div></div>
+	<div></div>
+	<div></div>
+</body>
+</html>
